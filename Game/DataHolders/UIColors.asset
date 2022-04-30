@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ca07c50e3b397748a7a1b47b4205a5b, type: 3}
+  m_Name: UIColors
+  m_EditorClassIdentifier: 
+  psnColor: {r: 0.62670386, g: 0.21529414, b: 0.7176471, a: 1}
+  brnColor: {r: 0.675, g: 0.2569797, b: 0.20215735, a: 1}
+  parColor: {r: 0.78800005, g: 0.77000916, b: 0.23747945, a: 1}
+  frzColor: {r: 0.23782055, g: 0.6726922, b: 0.795, a: 1}
+  slpColor: {r: 0.31123596, g: 0.41705617, b: 0.554, a: 1}
+  fntColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
+  none: {fileID: 0}
+  normal: {fileID: 21300000, guid: 07e4636c93be6204fb4cfca1d84d74f6, type: 3}
+  fighting: {fileID: 21300000, guid: 9a39e31ad9e2c5d47b7e057d081e81c5, type: 3}
+  flying: {fileID: 21300000, guid: 994d8535b8a23404686ca1c1e03af9ba, type: 3}
+  poison: {fileID: 21300000, guid: bb1e236ea27455d458bc3f757be7b9a0, type: 3}
+  ground: {fileID: 21300000, guid: 40ac622c53e54d042ace07f90d919c71, type: 3}
+  rock: {fileID: 21300000, guid: dc5f2b39938a98b4095507296c636b3f, type: 3}
+  bug: {fileID: 21300000, guid: 556918fcadc82064d8050ccb5bc544ab, type: 3}
+  ghost: {fileID: 21300000, guid: 2eb1b77bc0499a844bf07b65ddb3c0b3, type: 3}
+  steel: {fileID: 21300000, guid: 95ae51459646db54096d55f52dfda017, type: 3}
+  fire: {fileID: 21300000, guid: 562fde456b5dc6f4b8eb7c59dcb04073, type: 3}
+  water: {fileID: 21300000, guid: 4675925f1d065f24a8c7bca7b2e8b60e, type: 3}
+  grass: {fileID: 21300000, guid: 24d94159c400a004ebd10989199da23f, type: 3}
+  electric: {fileID: 21300000, guid: 0d0559dd0aecb924ebe0806fc31c659d, type: 3}
+  psychic: {fileID: 21300000, guid: f3ec9790807a0c9408c6d6fb7f318ab1, type: 3}
+  ice: {fileID: 21300000, guid: 594a682d10cfe5e419e2de6860d771f5, type: 3}
+  dragon: {fileID: 21300000, guid: 1653a0e4a6f3fe94ab74342830b2c9ea, type: 3}
+  dark: {fileID: 21300000, guid: d0658379df35e1f439a0fe99b2792f31, type: 3}
+  fairy: {fileID: 21300000, guid: 961187f6a1d20b0438ebe2f11e25dfc3, type: 3}
+  healthyHPColor: {r: 0.27450982, g: 0.75294125, b: 0.27450982, a: 1}
+  warningHPColor: {r: 0.7832461, g: 0.8, b: 0.2806283, a: 1}
+  dangerHPColor: {r: 0.65300006, g: 0.1306, b: 0.1306, a: 1}
+  phisical: {fileID: -6664296103196362058, guid: 52b8140bc4e6c4d45bf4aa640853834a, type: 3}
+  special: {fileID: -2822364327665062785, guid: 52b8140bc4e6c4d45bf4aa640853834a, type: 3}
+  status: {fileID: 7277602463803888754, guid: 52b8140bc4e6c4d45bf4aa640853834a, type: 3}
+  cb:
+    m_NormalColor: {r: 0.16470589, g: 0.6039216, b: 0.6666667, a: 1}
+    m_HighlightedColor: {r: 0.86666673, g: 0.8470589, b: 0.8470589, a: 1}
+    m_PressedColor: {r: 0.22242787, g: 0.8301887, b: 0.59238845, a: 1}
+    m_SelectedColor: {r: 0.5568628, g: 0.78823537, b: 1, a: 1}
+    m_DisabledColor: {r: 0.7843138, g: 0.7843138, b: 0.7843138, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0
+  fntCb:
+    m_NormalColor: {r: 0.6666667, g: 0.24066667, b: 0.24066667, a: 1}
+    m_HighlightedColor: {r: 0.455, g: 0.4447059, b: 0.4447059, a: 1}
+    m_PressedColor: {r: 0.739, g: 0.4115216, b: 0.4115216, a: 1}
+    m_SelectedColor: {r: 0.8039216, g: 0.31272548, b: 0.31272548, a: 1}
+    m_DisabledColor: {r: 0.7843138, g: 0.7843138, b: 0.7843138, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0
+  swtchCb:
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 0}
+    m_HighlightedColor: {r: 0, g: 0, b: 0, a: 0}
+    m_PressedColor: {r: 0, g: 0, b: 0, a: 0}
+    m_SelectedColor: {r: 0, g: 0, b: 0, a: 0}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0
