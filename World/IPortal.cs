@@ -4,7 +4,7 @@ namespace pokeCopy
 {
     internal interface IPortal
     {
-        public IEnumerator OnLook(PlayerMovement player);
+        public IEnumerator OnLook_CR(PlayerMovement player);
 
 
     }

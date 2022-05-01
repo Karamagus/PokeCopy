@@ -211,16 +211,16 @@ public class Unit : MonoBehaviour
         Leecher = null;
     }
 
-    public IEnumerator LeechSeedEffect()
+    public IEnumerator LeechSeedEffect_CR()
     {
         var leechedHp = CrrPokemon.OnEndOfRoundEffects();
         if (leechedHp == null || Leecher == null)
             yield break;
 
 
-        yield return BHud.WaitHpUpdate();
+        yield return BHud.WaitHpUpdat_CR();
         Leecher.CrrPokemon.TakeHeal(leechedHp.Value);
-        yield return Leecher.BHud.WaitHpUpdate();
+        yield return Leecher.BHud.WaitHpUpdat_CR();
 
     }
 

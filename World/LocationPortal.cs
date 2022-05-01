@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -37,12 +36,12 @@ namespace pokeCopy
             {
                 sceneData.ExtScene.SetConection(false);
             }
-            StartCoroutine(SwitchScene());
+            StartCoroutine(SwitchScene_CR());
 
         }
 
 
-        public IEnumerator OnLook(PlayerMovement player)
+        public IEnumerator OnLook_CR(PlayerMovement player)
         {
             if (door != null)
             {
@@ -54,12 +53,12 @@ namespace pokeCopy
 
         }
 
-        IEnumerator SwitchScene()
+        IEnumerator SwitchScene_CR()
         {
 
 
             GameManager.Instance.PauseGame(true);
-            yield return fader.FadeIn(.5f);
+            yield return fader.FadeIn_CR(.5f);
             
             
               
@@ -67,7 +66,7 @@ namespace pokeCopy
             var destination = FindObjectsOfType<LocationPortal>().First(x => x != this && Link == x.Link);
             player.SnapPositionToGrid(destination.Spawn.position);
 
-            yield return fader.FadeOut(.5f);
+            yield return fader.FadeOut_CR(.5f);
             if (door)
                 door.Play("WoodDoor_Closed");
 

@@ -10,7 +10,7 @@ namespace pokeCopy
     public class MenuController : MonoBehaviour
     {
         [SerializeField] GameObject menu;
-        [SerializeField] PartyMenu PartyMenu;
+        [SerializeField] PartyScreenUI PartyMenu;
         [SerializeField] InventoryUI bag;
 
         EventSystem eventSystem;
@@ -24,7 +24,7 @@ namespace pokeCopy
 
 
         public Action OnBack { get; private set; }
-        public PartyMenu PartyMenu1 { get => PartyMenu; }
+        public PartyScreenUI PartyMenu1 { get => PartyMenu; }
 
         public void Init(EventSystem control = null)
         {

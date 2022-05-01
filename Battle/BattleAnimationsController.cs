@@ -34,14 +34,14 @@ namespace pokeCopy
 
         }
 
-        public IEnumerator AnimateMoveUsage(Unit user, Unit target = null, Move move = null)
+        public IEnumerator AnimateMoveUsage_CR(Unit user, Unit target = null, Move move = null)
         {
 
             user.animator.Play("Battle_EnemyAttack");
 
             yield return new WaitForSeconds(user.animator.GetCurrentAnimatorStateInfo(0).length);
 
-            yield return PlayImpact(target, move);
+            yield return PlayImpact_CR(target, move);
             /*
             if (move.Base.Category != MoveCategory.Status)
                 target.impact.Play();
@@ -57,7 +57,7 @@ namespace pokeCopy
         }
 
 
-        public IEnumerator EffectAnimation(Unit affected)
+        public IEnumerator EffectAnimation_CR(Unit affected)
         {
             //change
             affected.animator.Play("Battle_EnemyStatChange");
@@ -66,7 +66,7 @@ namespace pokeCopy
         }
 
 
-        public IEnumerator FaintAnimation(Unit fainted)
+        public IEnumerator FaintAnimation_CR(Unit fainted)
         {
             fainted.animator.Play("Battle_EnemyFainted");
             yield return new WaitForSeconds(fainted.animator.GetCurrentAnimatorStateInfo(0).length);
@@ -75,7 +75,7 @@ namespace pokeCopy
             yield return null;
         }
 
-        public IEnumerator SwitchPokemon(Unit Switched)
+        public IEnumerator SwitchPokemon_CR(Unit Switched)
         {
             Switched.animator.Play("BattlePlayer_Recall");
             yield return new WaitForSeconds(Switched.animator.GetCurrentAnimatorStateInfo(0).length);
@@ -83,7 +83,7 @@ namespace pokeCopy
 
             yield return null;
         }
-        public IEnumerator PlayImpact(object targetO, Move move)
+        public IEnumerator PlayImpact_CR(object targetO, Move move)
         {
             var target = (Unit)targetO;
             target.animator.Play("BattlePlayer_Impact");
@@ -95,7 +95,7 @@ namespace pokeCopy
         }
 
 
-        public IEnumerator PlayThrowAnimation(Animator ballAni, Unit target)
+        public IEnumerator PlayThrowAnimation_CR(Animator ballAni, Unit target)
         {
             //ballAni.Play("PokeBall_Throw");
             //yield return new WaitForSeconds(ballAni.GetCurrentAnimatorStateInfo(0).length);
@@ -104,7 +104,7 @@ namespace pokeCopy
             yield return new WaitForSeconds(ballAni.GetCurrentAnimatorStateInfo(0).length);
         }
 
-        public IEnumerator PlayShakeAnimation(Animator ball)
+        public IEnumerator PlayShakeAnimation_CR(Animator ball)
         {
             yield return null;
             ball.Play("PokeBall_Shake");
@@ -112,7 +112,7 @@ namespace pokeCopy
         }
 
 
-        public IEnumerator PlayCatchSuccess(Animator ball)
+        public IEnumerator PlayCatchSuccess_CR(Animator ball)
         {
             yield return null;
             ball.Play("PokeBall_Success");
@@ -120,7 +120,7 @@ namespace pokeCopy
 
         }
 
-        public IEnumerator PlayCatchFail(Animator ball, Unit target)
+        public IEnumerator PlayCatchFail_CR(Animator ball, Unit target)
         {
             yield return null;
             ball.Play("PokeBall_Fails");

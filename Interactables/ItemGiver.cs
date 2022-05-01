@@ -14,9 +14,9 @@ namespace pokeCopy
 
 
 
-        public IEnumerator GiveItem(PlayerMovement player)
+        public IEnumerator GiveItem_CR(PlayerMovement player)
         {
-            yield return DialogueCacheManager.I.ShowDialogue(dialogue);
+            yield return DialogueCacheManager.I.ShowDialogue_CR(dialogue);
 
             player.GetComponent<Inventory>().AddItemStack(stack);
 
@@ -28,7 +28,7 @@ namespace pokeCopy
                 text += "s";
             text += ".";
 
-            yield return DialogueCacheManager.I.ShowText(text);
+            yield return DialogueCacheManager.I.ShowText_CR(text);
         }
 
 

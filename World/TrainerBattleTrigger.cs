@@ -9,7 +9,7 @@ namespace pokeCopy
         public void OnContact(PlayerMovement player)
         {
             GameManager.Instance.OnTrainerView();
-            StartCoroutine(GetComponentInParent<TrainerController>().TriggerBattle(player));
+            StartCoroutine(GetComponentInParent<TrainerController>().TriggerBattle_CR(player));
         }
     }
 }

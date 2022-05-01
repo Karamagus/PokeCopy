@@ -69,7 +69,7 @@ public class PokemonParty : MonoBehaviour
     }
 
 
-    public IEnumerator CheckForEvolutions()
+    public IEnumerator CheckForEvolutions_CR()
     {
 
         foreach (var pokemon in party)
@@ -77,7 +77,7 @@ public class PokemonParty : MonoBehaviour
             var evolution = pokemon.CanEvolveInto();
             if (evolution != null)
             {
-                yield return EvolutionSceneManager.I.StartEvolution(pokemon, evolution);
+                yield return EvolutionSceneUI.I.StartEvolution_CR(pokemon, evolution);
             }
 
         }

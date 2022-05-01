@@ -36,7 +36,7 @@ public class DialogueCacheManager : MonoBehaviour //Refactor needed
     // Start is called before the first frame update
 
 
-    public IEnumerator ShowText(string text, bool waitInput = true, bool autoclose = true)
+    public IEnumerator ShowText_CR(string text, bool waitInput = true, bool autoclose = true)
     {
 
         if (GameManager.Instance.State == GameState.freeRoam)
@@ -68,7 +68,7 @@ public class DialogueCacheManager : MonoBehaviour //Refactor needed
 
     //Starts dialogue. It also continues dialogue when interacting. 
 
-    public IEnumerator ShowDialogue(Dialogue dialogue)
+    public IEnumerator ShowDialogue_CR(Dialogue dialogue)
     {
         if (dialogue == null || !(dialogue.senteces.Count() > 0))
             yield break;

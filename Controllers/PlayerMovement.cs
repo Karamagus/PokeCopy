@@ -130,7 +130,7 @@ public class PlayerMovement : MonoBehaviour, ISavable, INamable
         isRunning = inputActions.PlayerDigital.Run.ReadValue<float>() != 0;
 
         if (inputActions.PlayerDigital.Interact.triggered)
-            StartCoroutine(InteractWith());
+            StartCoroutine(InteractWith_CR());
 
         //if (Keyboard.current.mKey.wasPressedThisFrame)
         //  InputMode();
@@ -186,7 +186,7 @@ public class PlayerMovement : MonoBehaviour, ISavable, INamable
                 targetPos.y += Mathf.Round(adjMove.y);
 
                 if (IsWakable(targetPos) && inputActions.PlayerDigital.Move.phase == InputActionPhase.Performed)
-                    StartCoroutine(Move(targetPos));
+                    StartCoroutine(Move_CR(targetPos));
             }
 
             animator.SetBool("IsMoving", isMoving);
@@ -198,7 +198,7 @@ public class PlayerMovement : MonoBehaviour, ISavable, INamable
     }
 
 
-    public IEnumerator Move(Vector3 targetPos)
+    public IEnumerator Move_CR(Vector3 targetPos)
     {
         isMoving = true;
 
@@ -262,13 +262,13 @@ public class PlayerMovement : MonoBehaviour, ISavable, INamable
 
         Collider2D tile = Physics2D.OverlapCircle(position, 0.185f, LayersManager.i.PortalLayer);
         if (tile != null && tile.TryGetComponent<IPortal>(out var p))
-            StartCoroutine(p.OnLook(this));
+            StartCoroutine(p.OnLook_CR(this));
 
 
         return true;
     }
 
-    IEnumerator InteractWith()
+    IEnumerator InteractWith_CR()
     {
         //inputActions.PlayerDigital.Move.Disable();
         Vector2 pos = (Vector2)transform.position + new Vector2(animator.GetFloat("Horizontal"), animator.GetFloat("Vertical"));
@@ -276,7 +276,7 @@ public class PlayerMovement : MonoBehaviour, ISavable, INamable
         //var i = Physics2D.OverlapCircle(pos, .01f);
         if (GameManager.Instance.State == GameState.freeRoam && i != null && i.TryGetComponent<IInteractable>(out var p))
         {
-            yield return (p.Interact(transform));
+            yield return (p.Interact_CR(transform));
         }
 
     }
