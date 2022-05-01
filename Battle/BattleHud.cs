@@ -175,7 +175,7 @@ public class BattleHud : MonoBehaviour
     }
 
 
-    public IEnumerator WaitHpUpdate()
+    public IEnumerator WaitHpUpdat_CR()
     {
         yield return new WaitUntil(()=>isUpdating == false);
         yield return new WaitForSeconds(0.25f);

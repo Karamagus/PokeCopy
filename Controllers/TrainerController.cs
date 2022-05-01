@@ -19,7 +19,7 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable, INamabl
     [SerializeField] TrainerData data;
     [SerializeField] GameObject exclamation;
     [SerializeField] CharMovement movement;
-    [SerializeField] NPCMono behave;
+    [SerializeField] NPCMovement behave;
     [SerializeField] Direction startingDirection;
     Vector2[] startingPos;
     [SerializeField] Dialogue dialogue;
@@ -96,7 +96,7 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable, INamabl
             fov.SetActive(false);
     }
 
-    public IEnumerator TriggerBattle(PlayerMovement player = null)//passing player allows for referencing without the need for a raycast
+    public IEnumerator TriggerBattle_CR(PlayerMovement player = null)//passing player allows for referencing without the need for a raycast
     {
         //behave.enabled = false;
         if (battleLost)
@@ -115,7 +115,7 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable, INamabl
             moveVec = new Vector2(Mathf.Round(moveVec.x), Mathf.Round(moveVec.y));
 
             yield return movement.Move(moveVec);
-            yield return DialogueCacheManager.I.ShowDialogue(dialogue);
+            yield return DialogueCacheManager.I.ShowDialogue_CR(dialogue);
 
             GameManager.Instance.StartTrainerBattle(this);
 
@@ -202,14 +202,14 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable, INamabl
     }
         */
 
-    public IEnumerator Interact(Transform initiator) //reeavaluete
+    public IEnumerator Interact_CR(Transform initiator) //reeavaluete
     {
 
 
         movement.LookTowrds(initiator.position);
         if (!battleLost)
         {
-            yield return DialogueCacheManager.I.ShowDialogue(dialogue);
+            yield return DialogueCacheManager.I.ShowDialogue_CR(dialogue);
             /*
             DialogueCacheManager.I.StartDialogue(dialogue, () =>
             {
@@ -222,7 +222,7 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable, INamabl
         else
         {
             //DialogueCacheManager.I.StartDialogue(defeatDialogue);
-            yield return DialogueCacheManager.I.ShowDialogue(defeatDialogue);
+            yield return DialogueCacheManager.I.ShowDialogue_CR(defeatDialogue);
         }
 
 

@@ -51,12 +51,12 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleHud enemyHUD;
 
     [Header("SubSystems and Windows")]
-    [SerializeField] PartyMenu partyMenu;
+    [SerializeField] PartyScreenUI partyMenu;
     [SerializeField] InventoryUI inventory;
     [SerializeField] GameObject choiceDoSwitchMenu;
     [SerializeField] GameObject partyBattleSelection;
     [SerializeField] GameObject inventoryPocketSelectionMenu;
-    [SerializeField] ForgetMenuSubMenu forgetMoveUI;
+    [SerializeField] ForgetMenuSubMenuUI forgetMoveUI;
     public DialogueBox dialogueBox;
     [SerializeField] BattleAnimationsController animations;
 
@@ -222,7 +222,7 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialougueText_CR($"Come back, {playerUnit.name}.");
 
-            yield return animations.SwitchPokemon(playerUnit);
+            yield return animations.SwitchPokemon_CR(playerUnit);
         }
         playerHUD.Hide();
         playerUnit.CrrPokemon.RemoveAllVolat();
@@ -373,7 +373,7 @@ public class BattleSystem : MonoBehaviour
         //play before effect animation
         if (!canMove)
         {
-            yield return user.BHud.WaitHpUpdate();
+            yield return user.BHud.WaitHpUpdat_CR();
             yield return ShowEffectsChanges_CR(user);
             // method returning a bool 
             if (user.CrrPokemon.HP <= 0)
@@ -409,8 +409,8 @@ public class BattleSystem : MonoBehaviour
             int dmg = 0;
             if (move.Base.Category == MoveCategory.Status)
             {
-                yield return animations.AnimateMoveUsage(user, target, move);
-                yield return animations.EffectAnimation(target);
+                yield return animations.AnimateMoveUsage_CR(user, target, move);
+                yield return animations.EffectAnimation_CR(target);
                 yield return RunMoveEffects_CR(move.Base.Effects, user, target, move.Base.Target);
 
             }
@@ -430,14 +430,14 @@ public class BattleSystem : MonoBehaviour
                     //
                     */
 
-                    yield return animations.AnimateMoveUsage(user, target, move);
+                    yield return animations.AnimateMoveUsage_CR(user, target, move);
                     DamageDetails details = target.TakeMoveDamage(move, user);
 
                     target.animator.Play("BattleEnemy_Damaged2");
 
                     yield return new WaitForSeconds(target.animator.GetCurrentAnimatorStateInfo(0).length);
 
-                    yield return target.BHud.WaitHpUpdate();
+                    yield return target.BHud.WaitHpUpdat_CR();
 
 
                     dmg = details.Damage;
@@ -459,7 +459,7 @@ public class BattleSystem : MonoBehaviour
 
                 //Animations
 
-                yield return user.BHud.WaitHpUpdate();
+                yield return user.BHud.WaitHpUpdat_CR();
                 var affectd = (hitEffect == HitEffectsID.leech_life) ? target : user;
                 yield return dialogueBox.TypeDialougueText_CR($"{affectd.unitName}{ConditionsDB.HitEffects[hitEffect].Message}");
 
@@ -524,7 +524,7 @@ public class BattleSystem : MonoBehaviour
 
         //animation
 
-        yield return user.BHud.WaitHpUpdate();
+        yield return user.BHud.WaitHpUpdat_CR();
         yield return ShowEffectsChanges_CR(user);
         //refactor
         if (user.CrrPokemon.HP <= 0)
@@ -573,7 +573,7 @@ public class BattleSystem : MonoBehaviour
             ChangeState(BattleState.END);//
 
             yield return new WaitForSeconds(1f);
-            yield return GameManager.Instance.FadeInToFreeRoam();
+            yield return GameManager.Instance.FadeInToFreeRoam_CR();
             escapee.CrrPokemon.HasLeveledUp();
 
             OnEndBattle(false);
@@ -589,7 +589,7 @@ public class BattleSystem : MonoBehaviour
     {
 
         //animation
-        yield return playerUnit.LeechSeedEffect();
+        yield return playerUnit.LeechSeedEffect_CR();
         yield return ShowEffectsChanges_CR(playerUnit);
 
         if (playerUnit.CrrPokemon.HP <= 0)
@@ -599,7 +599,7 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.END) yield break;
 
         //animation
-        yield return enemyUnit.LeechSeedEffect();
+        yield return enemyUnit.LeechSeedEffect_CR();
         yield return ShowEffectsChanges_CR(enemyUnit);
 
         if (enemyUnit.CrrPokemon.HP <= 0)
@@ -676,7 +676,7 @@ public class BattleSystem : MonoBehaviour
 
         fainted.ApplyCondition(ConditionID.fnt);
         // yield return dialogueBox.TypeDialougueText_CR($"{fainted.CrrPokemon.NickName} has fainted.", 2.5f);
-        yield return animations.FaintAnimation(fainted);
+        yield return animations.FaintAnimation_CR(fainted);
         fainted.BHud.gameObject.SetActive(false);
         yield return ShowEffectsChanges_CR(fainted, 2);
 
@@ -717,7 +717,7 @@ public class BattleSystem : MonoBehaviour
 
                         yield return dialogueBox.TypeDialougueText_CR($"{playerUnit.CrrPokemon.NickName} is trying to learn {newMove.BaseMove.MoveName}");
                         yield return dialogueBox.TypeDialougueText_CR($"But it cannot learn more than {PokemonBase.MAX_MOVES_COUNT} moves");
-                        yield return SelectMoveToForget(playerUnit.CrrPokemon, newMove.BaseMove);
+                        yield return SelectMoveToForget_CR(playerUnit.CrrPokemon, newMove.BaseMove);
 
                         yield return new WaitWhile(() => state == BattleState.FORGET_MOVE);
                     }
@@ -736,7 +736,7 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-    IEnumerator SelectMoveToForget(Pokemon poke, MovesBase newMove)
+    IEnumerator SelectMoveToForget_CR(Pokemon poke, MovesBase newMove)
     {
         ChangeState(BattleState.FORGET_MOVE);
         yield return dialogueBox.TypeDialougueText_CR($"Choose a move to forget", readTimeInSeconds: 2.5f);
@@ -746,13 +746,13 @@ public class BattleSystem : MonoBehaviour
             {
                 dialogueBox.CloseMenus();
 
-                StartCoroutine(ForgetMove(forgetMoveUI.SelectedIndex, newMove));
+                StartCoroutine(ForgetMove_CR(forgetMoveUI.SelectedIndex, newMove));
 
             },
             () =>
             {
                 dialogueBox.CloseMenus();
-                StartCoroutine(ForgetMove(PokemonBase.MAX_MOVES_COUNT, newMove));
+                StartCoroutine(ForgetMove_CR(PokemonBase.MAX_MOVES_COUNT, newMove));
                 //return false;
             },
             MenuMode.Forget_Move);
@@ -771,7 +771,7 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-    IEnumerator ForgetMove(int index, MovesBase newMove)
+    IEnumerator ForgetMove_CR(int index, MovesBase newMove)
     {
         //dialogueBox.CloseMenus();
         if (index == PokemonBase.MAX_MOVES_COUNT)
@@ -840,7 +840,7 @@ public class BattleSystem : MonoBehaviour
 
         ChangeState(BattleState.END);
         yield return ShowBattleResult_CR(hasWon);
-        yield return GameManager.Instance.FadeInToFreeRoam();
+        yield return GameManager.Instance.FadeInToFreeRoam_CR();
 
         OnEndBattle(hasWon);
 
@@ -1095,7 +1095,7 @@ public class BattleSystem : MonoBehaviour
 
                 if (inventory.CheckIfPkball())
                 {
-                    StartCoroutine(UseItem());
+                    StartCoroutine(UseItem_CR());
                     return;
                 }
 
@@ -1104,7 +1104,7 @@ public class BattleSystem : MonoBehaviour
                     () =>
                     {
                         //check if pp restore
-                        StartCoroutine(UseItem());
+                        StartCoroutine(UseItem_CR());
                     }
                     );
             }
@@ -1128,7 +1128,7 @@ public class BattleSystem : MonoBehaviour
 
 
 
-    IEnumerator UseItem()
+    IEnumerator UseItem_CR()
     {
 
 
@@ -1137,7 +1137,7 @@ public class BattleSystem : MonoBehaviour
         if (!itemUsed)
         {
 
-            yield return inventory.UnusableWarnning();
+            yield return inventory.UnusableWarnning_CR();
             yield break;
         }
         dialogueBox.CloseMenus();
@@ -1155,7 +1155,7 @@ public class BattleSystem : MonoBehaviour
             inventory.CrrntItemListEnabaler(true);
             inventory.gameObject.SetActive(false);
             //play Animation
-            yield return playerHUD.WaitHpUpdate();
+            yield return playerHUD.WaitHpUpdat_CR();
             yield return dialogueBox.TypeDialougueText_CR($"Used {itemUsed.name} on {inventory.PartyMenuSelection.SelectedPokemon.NickName}.");
         }
 
@@ -1186,7 +1186,7 @@ public class BattleSystem : MonoBehaviour
         //Debug.Log(ballAni.runtimeAnimatorController.name);
 
 
-        yield return animations.PlayThrowAnimation(ballAni, enemyUnit);
+        yield return animations.PlayThrowAnimation_CR(ballAni, enemyUnit);
         int shakeCount = TryToCatch(enemyUnit.CrrPokemon, pkball);
 
 
@@ -1195,12 +1195,12 @@ public class BattleSystem : MonoBehaviour
         {
             Debug.Log("Cycle " + i);
             yield return new WaitForSeconds(.5f);
-            yield return animations.PlayShakeAnimation(ballAni);
+            yield return animations.PlayShakeAnimation_CR(ballAni);
         }
 
         if (shakeCount == 4)
         {
-            yield return animations.PlayCatchSuccess(ballAni);
+            yield return animations.PlayCatchSuccess_CR(ballAni);
             yield return dialogueBox.TypeDialougueText_CR($"{enemyUnit.CrrPokemon.Species} was caught!");
             //add pokemmon to party or PC
             if (playerParty.GetSize() < 6)
@@ -1213,14 +1213,14 @@ public class BattleSystem : MonoBehaviour
 
             Destroy(ball);
             yield return new WaitForSeconds(1f);
-            yield return GameManager.Instance.FadeInToFreeRoam();
+            yield return GameManager.Instance.FadeInToFreeRoam_CR();
             OnEndBattle(true);
 
         }
         else
         {
             yield return new WaitForSeconds(1f);
-            yield return animations.PlayCatchFail(ballAni, enemyUnit);
+            yield return animations.PlayCatchFail_CR(ballAni, enemyUnit);
 
             if (shakeCount == 0)
                 yield return dialogueBox.TypeDialougueText_CR($"Oh, no! The Pokémon broke free!");
