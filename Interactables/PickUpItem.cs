@@ -10,7 +10,7 @@ namespace pokeCopy
         public bool WasPickedUp { get; set; } = false;
 
 
-        public IEnumerator Interact(Transform initiator = null)
+        public IEnumerator Interact_CR(Transform initiator = null)
         {
            // Debug.Log($"Interacted with {this.name}.");
 
@@ -27,7 +27,7 @@ namespace pokeCopy
                 GetComponent<SpriteRenderer>().enabled = false;
                 GetComponent<BoxCollider2D>().enabled = false;
 
-                yield return DialogueCacheManager.I.ShowText($"{playerName} found {item.Amount} {item.Item.Name}{plural}");
+                yield return DialogueCacheManager.I.ShowText_CR($"{playerName} found {item.Amount} {item.Item.Name}{plural}");
 
 
 

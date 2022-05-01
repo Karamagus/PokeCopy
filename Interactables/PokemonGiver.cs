@@ -14,9 +14,9 @@ namespace pokeCopy
 
 
 
-        public IEnumerator GivePokemon(PlayerMovement player)
+        public IEnumerator GivePokemon_CR(PlayerMovement player)
         {
-            yield return DialogueCacheManager.I.ShowDialogue(dialogue);
+            yield return DialogueCacheManager.I.ShowDialogue_CR(dialogue);
 
             givenPokemon.Init();
             player.GetComponent<PokemonParty>().AddToParty(givenPokemon);
@@ -25,7 +25,7 @@ namespace pokeCopy
 
             var text = $"{player.Name} received {givenPokemon.Species}.";
 
-            yield return DialogueCacheManager.I.ShowText(text);
+            yield return DialogueCacheManager.I.ShowText_CR(text);
         }
 
 
