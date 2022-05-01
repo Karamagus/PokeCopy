@@ -14,15 +14,15 @@ namespace pokeCopy
     {
         [SerializeField] Text pocketName;
         [SerializeField] GameObject ItemListBase;
-        [SerializeField] ItemSlotUI itemSlotUi;
+        [SerializeField] ItemSlotButtonData itemSlotUi;
         [SerializeField] Text description;
         [SerializeField] Image icon;
         [Header("Submenus")]
         [SerializeField] GameObject selectedUseMenu;
         [SerializeField] GameObject selectedMenu;
-        [SerializeField] PartyMenu partyMenuSelection;
+        [SerializeField] PartyScreenUI partyMenuSelection;
         [SerializeField] Text cancelCloseButtonText;
-        [SerializeField] ForgetMenuSubMenu forgetMoveUI;
+        [SerializeField] ForgetMenuSubMenuUI forgetMoveUI;
         ColorBlock normalButtonColor;
         ColorBlock selectedButtonColors;
 
@@ -50,7 +50,7 @@ namespace pokeCopy
 
 
         public Action OnCancelButton { get => onCancelButton; set => onCancelButton = value; }
-        public PartyMenu PartyMenuSelection => partyMenuSelection;
+        public PartyScreenUI PartyMenuSelection => partyMenuSelection;
 
         public Inventory Inventory => inventory;
 
@@ -113,7 +113,7 @@ namespace pokeCopy
             if (isTabFixed)
             {
                 tabs[currentTabIndex].SetActive(false);
-                StartCoroutine(ChangeToTab(fixedTabIndex));
+                StartCoroutine(ChangeToTab_CR(fixedTabIndex));
             }
             HandleUpdate();
         }
@@ -163,7 +163,7 @@ namespace pokeCopy
 
             var nav = inputs.UI.Navigate.ReadValue<Vector2>();
 
-            var slot = EventSystem.current.currentSelectedGameObject.GetComponent<ItemSlotUI>();
+            var slot = EventSystem.current.currentSelectedGameObject.GetComponent<ItemSlotButtonData>();
 
             //if ( nav.y != 0)
 
@@ -176,7 +176,7 @@ namespace pokeCopy
             HandleScrolling(slot);
         }
 
-        public void HandleScrolling(ItemSlotUI slot = null)
+        public void HandleScrolling(ItemSlotButtonData slot = null)
         {
 
 
@@ -190,13 +190,13 @@ namespace pokeCopy
             }
         }
 
-        public void UpdateDescription(ItemSlotUI slot = null)
+        public void UpdateDescription(ItemSlotButtonData slot = null)
         {
             if ((selectedUseMenu && selectedUseMenu.activeSelf) || (selectedMenu && selectedMenu.activeSelf))
                 return;
 
             if (slot == null)
-                slot = EventSystem.current.currentSelectedGameObject.GetComponent<ItemSlotUI>();
+                slot = EventSystem.current.currentSelectedGameObject.GetComponent<ItemSlotButtonData>();
             if (slot != null && slot.Item != null)
             {
                 description.gameObject.SetActive(true);
@@ -213,7 +213,7 @@ namespace pokeCopy
 
         }
 
-        public IEnumerator WriteOnDdescription(string text, float typingDelayInSeconds = 0.01f, float readTimeInSeconds = 1f)
+        public IEnumerator WriteOnDdescription_CR(string text, float typingDelayInSeconds = 0.01f, float readTimeInSeconds = 1f)
         {
             inputs.UI.Disable();
             description.text = "";
@@ -247,7 +247,7 @@ namespace pokeCopy
 
             if (pocketName)
                 pocketName.text = Inventory.itemCategory[currentTabIndex];
-            var selection = tabs[currentTabIndex].GetComponentInChildren<ItemSlotUI>();
+            var selection = tabs[currentTabIndex].GetComponentInChildren<ItemSlotButtonData>();
             if (selection)
                 EventSystem.current.SetSelectedGameObject(tabs[currentTabIndex].transform.GetChild(selectionIndexesByTab[currentTabIndex]).gameObject);
             else
@@ -257,7 +257,7 @@ namespace pokeCopy
             scrollView.content = itemListRect;
         }
 
-        public IEnumerator ChangeToTab(int tab)//refactor
+        public IEnumerator ChangeToTab_CR(int tab)//refactor
         {
             if (!isTabFixed)
                 yield break;
@@ -276,7 +276,7 @@ namespace pokeCopy
 
             if (pocketName)
                 pocketName.text = Inventory.itemCategory[currentTabIndex];
-            var selection = tabs[currentTabIndex].GetComponentInChildren<ItemSlotUI>();
+            var selection = tabs[currentTabIndex].GetComponentInChildren<ItemSlotButtonData>();
             if (selection)
                 EventSystem.current.SetSelectedGameObject(tabs[currentTabIndex].transform.GetChild(selectionIndexesByTab[currentTabIndex]).gameObject);
             else
@@ -467,7 +467,7 @@ namespace pokeCopy
             }
 
             for (int i = itemStackIndex; i < slotsCount; i++)
-                tabs[tabIndex].transform.GetChild(i).GetComponent<ItemSlotUI>().SetData(inventory.AllItens[tabIndex][i]);
+                tabs[tabIndex].transform.GetChild(i).GetComponent<ItemSlotButtonData>().SetData(inventory.AllItens[tabIndex][i]);
 
             if (selectionIndexesByTab[tabIndex] >= slotsCount)
             {
@@ -481,7 +481,7 @@ namespace pokeCopy
 
         void UpdateStackOnUse(int tabIndex, int slotIndex)
         {
-            tabs[tabIndex].transform.GetChild(slotIndex).GetComponent<ItemSlotUI>().SetData(inventory.AllItens[tabIndex][slotIndex]);
+            tabs[tabIndex].transform.GetChild(slotIndex).GetComponent<ItemSlotButtonData>().SetData(inventory.AllItens[tabIndex][slotIndex]);
             Debug.Log("SLOT Updated");
 
         }
@@ -534,7 +534,7 @@ namespace pokeCopy
         {
             if (!selectedStack.Item.CanUseOutsideBattle)
             {
-                StartCoroutine(TryToUseSelected_OnMenu());
+                StartCoroutine(TryToUseSelected_OnMenu_CR());
                 return;
             }
 
@@ -542,7 +542,7 @@ namespace pokeCopy
             partyMenuSelection.Open(
                 () =>
                 {
-                    StartCoroutine(UseItem_OnMenu(selectedStack, partyMenuSelection.SelectedPokemon));
+                    StartCoroutine(UseItem_OnMenu_CR(selectedStack, partyMenuSelection.SelectedPokemon));
                     EventSystem.current.SetSelectedGameObject(null);
 
                 },
@@ -580,17 +580,17 @@ namespace pokeCopy
 
 
 
-        IEnumerator UseItem(ItemStack stack, Pokemon selectedPkmn)
+        IEnumerator UseItem_CR(ItemStack stack, Pokemon selectedPkmn)
         {
             if (GameManager.Instance.State == GameState.Menu)
             {
                 if (stack.Item.CanUseOutsideBattle)
                 {
-                    yield return UseItem_OnMenu(stack, selectedPkmn);
+                    yield return UseItem_OnMenu_CR(stack, selectedPkmn);
                     yield break;
                 }
 
-                yield return DialogueCacheManager.I.ShowText($"Can't use {stack.Item.name} outside Battle.");
+                yield return DialogueCacheManager.I.ShowText_CR($"Can't use {stack.Item.name} outside Battle.");
             }
 
             if (GameManager.Instance.State == GameState.Battle)
@@ -601,7 +601,7 @@ namespace pokeCopy
                     yield break;
                 }
 
-                yield return DialogueCacheManager.I.ShowText($"Can't use {stack.Item.name} on Battle.");
+                yield return DialogueCacheManager.I.ShowText_CR($"Can't use {stack.Item.name} on Battle.");
 
             }
 
@@ -609,7 +609,7 @@ namespace pokeCopy
             yield return null;
         }
 
-        IEnumerator UseItem_OnMenu(ItemStack stack, Pokemon selectedPokemon)
+        IEnumerator UseItem_OnMenu_CR(ItemStack stack, Pokemon selectedPokemon)
         {
 
             if (stack.Item is TmAndHMItem)
@@ -634,11 +634,11 @@ namespace pokeCopy
             if (usedItem && usedItem is MedicineItem)
             {
 
-                yield return DialogueCacheManager.I.ShowText($"Player used {usedItem.name} on {selectedPokemon.NickName}.");
+                yield return DialogueCacheManager.I.ShowText_CR($"Player used {usedItem.name} on {selectedPokemon.NickName}.");
 
             }
             else
-                yield return DialogueCacheManager.I.ShowText($"It won't have any effect!");
+                yield return DialogueCacheManager.I.ShowText_CR($"It won't have any effect!");
 
             CancelButton();
 
@@ -651,14 +651,14 @@ namespace pokeCopy
             return null;
         }
 
-        public IEnumerator TryToUseSelected_OnMenu()
+        public IEnumerator TryToUseSelected_OnMenu_CR()
         {
             if (!selectedStack.Item.CanUseOutsideBattle)
             {
                 EventSystem.current.SetSelectedGameObject(null);
                 selectedUseMenu.SetActive(false);
 
-                yield return DialogueCacheManager.I.ShowText($"Can't use {selectedStack.Item.Name} outside battle.");
+                yield return DialogueCacheManager.I.ShowText_CR($"Can't use {selectedStack.Item.Name} outside battle.");
                 UnselectItem();
 
                 yield break;
@@ -692,7 +692,7 @@ namespace pokeCopy
             if (!pokemon.Base.TM_n_HM_Leanrnables.Contains(tmItem.Move))
             {
 
-                yield return DialogueCacheManager.I.ShowText($"{pokemon.NickName} can't learn this move");
+                yield return DialogueCacheManager.I.ShowText_CR($"{pokemon.NickName} can't learn this move");
 
                 partyMenuSelection.ResetPressedButtonColors();
                 EventSystem.current.SetSelectedGameObject(partyMenuSelection.transform.GetChild(partyMenuSelection.GetSelectedPartyIndex()).gameObject);
@@ -702,7 +702,7 @@ namespace pokeCopy
 
             if (pokemon.HasMove(tmItem.Move))
             {
-                yield return DialogueCacheManager.I.ShowText($"{pokemon.NickName} already knowns {tmItem.Move.name}.");
+                yield return DialogueCacheManager.I.ShowText_CR($"{pokemon.NickName} already knowns {tmItem.Move.name}.");
                 CancelButton();
                 yield break;
 
@@ -712,7 +712,7 @@ namespace pokeCopy
             if (pokemon.MoveSet.Count < PokemonBase.MAX_MOVES_COUNT)
             {
                 inventory.UseItem(selectedStack, pokemon);
-                yield return DialogueCacheManager.I.ShowText($"{pokemon.NickName} learned {tmItem.Move.name}.");
+                yield return DialogueCacheManager.I.ShowText_CR($"{pokemon.NickName} learned {tmItem.Move.name}.");
 
                 CancelButton();
             }
@@ -720,8 +720,8 @@ namespace pokeCopy
             else
             {
 
-                yield return DialogueCacheManager.I.ShowText($"{pokemon.NickName} is trying to learn {tmItem.Move.MoveName}");
-                yield return DialogueCacheManager.I.ShowText($"But it cannot learn more than {PokemonBase.MAX_MOVES_COUNT} moves");
+                yield return DialogueCacheManager.I.ShowText_CR($"{pokemon.NickName} is trying to learn {tmItem.Move.MoveName}");
+                yield return DialogueCacheManager.I.ShowText_CR($"But it cannot learn more than {PokemonBase.MAX_MOVES_COUNT} moves");
                 Debug.Log($"{selectedStack.Item.name}");
                 var tmIndex = selectionIndexesByTab[currentTabIndex];
                 forgetMoveUI.Open(
@@ -730,7 +730,7 @@ namespace pokeCopy
                         if (DialogueCacheManager.I.IsShowing)
                             return;
 
-                        StartCoroutine(MoveToForgetChoice(pokemon, tmIndex, tmItem));
+                        StartCoroutine(MoveToForgetChoice_CR(pokemon, tmIndex, tmItem));
 
 
 
@@ -748,35 +748,35 @@ namespace pokeCopy
         }
 
 
-        public IEnumerator UnusableWarnning()
+        public IEnumerator UnusableWarnning_CR()
         {
             if (!selectedStack.Item.CanUseInBattle)
             {
-                yield return WriteOnDdescription($"Can't Use {selectedStack.Item.name} on Battle.");
+                yield return WriteOnDdescription_CR($"Can't Use {selectedStack.Item.name} on Battle.");
                 yield break;
 
             }
-            yield return WriteOnDdescription($"Can't Use {selectedStack.Item.name} on {partyMenuSelection.SelectedPokemon.NickName}.");
+            yield return WriteOnDdescription_CR($"Can't Use {selectedStack.Item.name} on {partyMenuSelection.SelectedPokemon.NickName}.");
         }
 
-        IEnumerator MoveToForgetChoice(Pokemon pokemon, int tmIndex, TmAndHMItem tmItem)// rename
+        IEnumerator MoveToForgetChoice_CR(Pokemon pokemon, int tmIndex, TmAndHMItem tmItem)// rename
         {
             //not using the return value of UseItem() as check because Item can be a HM and therefore not consumed upon use
             inventory.UseItem(currentTabIndex, tmIndex, pokemon, forgetMoveUI.SelectedIndex);
             if (pokemon.HasMove(tmItem.Move))
             {
-                yield return DialogueCacheManager.I.ShowText($"{pokemon.NickName} learned {tmItem.Move.name}.");
+                yield return DialogueCacheManager.I.ShowText_CR($"{pokemon.NickName} learned {tmItem.Move.name}.");
                 CancelButton();
                 yield break;
             }
-            yield return DialogueCacheManager.I.ShowText($"{pokemon.NickName} did not learn {tmItem.Move.name}.");
+            yield return DialogueCacheManager.I.ShowText_CR($"{pokemon.NickName} did not learn {tmItem.Move.name}.");
 
             CancelButton();
         }
 
-        IEnumerator MoveToForgetClose(Pokemon pokemon, TmAndHMItem tmItem)
+        IEnumerator MoveToForgetClose_CR(Pokemon pokemon, TmAndHMItem tmItem)
         {
-            yield return DialogueCacheManager.I.ShowText($"{pokemon.NickName} did not learn {tmItem.Move.name}.");
+            yield return DialogueCacheManager.I.ShowText_CR($"{pokemon.NickName} did not learn {tmItem.Move.name}.");
             CancelButton();
         }
 

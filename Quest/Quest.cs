@@ -35,22 +35,22 @@ namespace pokeCopy
 
         
 
-        public IEnumerator StartQuest()
+        public IEnumerator StartQuest_CR()
         {
             State = QuestState.Started;
 
-            yield return DialogueCacheManager.I.ShowDialogue(Base.StartDialogue);
+            yield return DialogueCacheManager.I.ShowDialogue_CR(Base.StartDialogue);
 
             var questManager = QuestLogManager.GetQuestManager();
             questManager.AddQuest(this);
 
         }
 
-        public IEnumerator CompleteQuest(Transform player)
+        public IEnumerator CompleteQuest_CR(Transform player)
         {
             State = QuestState.Finished;
 
-            yield return DialogueCacheManager.I.ShowDialogue(Base.CompletedDialogue);
+            yield return DialogueCacheManager.I.ShowDialogue_CR(Base.CompletedDialogue);
 
             var invetory = Inventory.GetPlayerInventory();
             if (Base.RequiredItem.Count > 0)
@@ -74,7 +74,7 @@ namespace pokeCopy
                     string playerName = player.GetComponent<PlayerMovement>().Name;
                     string article = (item.Amount == 1) ? "a " : "";
                     string plural = (item.Amount > 1) ? "s" : "";
-                    yield return DialogueCacheManager.I.ShowText($"{playerName} received {article}{item.Item.name}{plural}.");
+                    yield return DialogueCacheManager.I.ShowText_CR($"{playerName} received {article}{item.Item.name}{plural}.");
                 }
             }
 

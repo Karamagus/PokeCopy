@@ -17,7 +17,7 @@ namespace pokeCopy
 
 
 
-        public IEnumerator FadeIn(float timeInSeconds)
+        public IEnumerator FadeIn_CR(float timeInSeconds)
         {
             var colorNew = image.color;
             while(image.color.a < 1)
@@ -30,7 +30,7 @@ namespace pokeCopy
         }
 
 
-        public IEnumerator FadeOut(float timeInSeconds)
+        public IEnumerator FadeOut_CR(float timeInSeconds)
         {
             var colorNew = image.color;
             while (image.color.a > 0)
