@@ -35,7 +35,7 @@ namespace pokeCopy
         }
 
 
-        public IEnumerator OnLook(PlayerMovement player)
+        public IEnumerator OnLook_CR(PlayerMovement player)
         {
             if (door != null)
             {
@@ -53,14 +53,14 @@ namespace pokeCopy
 
 
             GameManager.Instance.PauseGame(true);
-            yield return fader.FadeIn(.5f);
+            yield return fader.FadeIn_CR(.5f);
 
             yield return SceneManager.LoadSceneAsync(sceneIdx);
 
             var destination = FindObjectsOfType<Portal>().First(x => x != this && Link == x.Link);
             player.SnapPositionToGrid(destination.Spawn.position);
 
-            yield return fader.FadeOut(.5f);
+            yield return fader.FadeOut_CR(.5f);
             GameManager.Instance.PauseGame(false);
             Destroy(gameObject);
         }
