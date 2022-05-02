@@ -2,152 +2,158 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Pokemon", menuName = "Pokemon/Create new pokemon")]
-public class PokemonBase : ScriptableObject
+
+
+
+namespace pokeCopy
 {
 
-    [TextArea]
-    [SerializeField] string description;
-    [SerializeField] byte catchRate = 255;
-    [SerializeField] int xpYield;
-    [SerializeField] Species_Gender_Threshold genderDistribution;
-    [SerializeField] LevelingRate growth;
-    [Header("Sprites")]
-    [SerializeField] Sprite front;
-    [SerializeField] Sprite back;
-    [SerializeField] Sprite chibi;
-    [Header("Types")]
-    [SerializeField] PokemonType type1;
-    [SerializeField] PokemonType type2;
-    [Header("Base Stats")]
-    [SerializeField] int maxHP;
-    [SerializeField] int attack;
-    [SerializeField] int defense;
-    [SerializeField] int spAttack;
-    [SerializeField] int spDefense;
-    [SerializeField] int speed;
-    [Space]
-    [SerializeField] List<ByLevelMoves> leanrnables;
-    [SerializeField] List<MovesBase> TM_n_HM;
-    [SerializeField] List<EvolutionCriteria> evolutions;
-
-
-
-    public string Description { get => description; }
-
-    public Sprite Front { get => front; }
-    public Sprite Back { get => back; }
-    public Sprite Chibi => chibi;
-    public PokemonType Type1 { get => type1; }
-    public PokemonType Type2 { get => type2; }
-
-
-
-    public int MaxHP { get => maxHP; }
-    public int Attack { get { return attack; } }
-    public int Defense { get => defense; }
-    public int SpAttack { get => spAttack; }
-    public int SpDefense { get => spDefense; }
-    public int Speed { get => speed; }
-    public List<ByLevelMoves> Leanrnables { get => leanrnables; }
-
-    public static int MAX_MOVES_COUNT => 4;
-
-    public byte CatchRate => catchRate;
-
-    public int ExpYield => xpYield;
-
-    public LevelingRate Growth => growth;
-
-    public List<MovesBase> TM_n_HM_Leanrnables => TM_n_HM;
-
-    public Species_Gender_Threshold GenderThreshold => genderDistribution;
-
-    public List<EvolutionCriteria> Evolutions => evolutions;
-
-    public int GetExpForLevel(int level)
+    [CreateAssetMenu(fileName = "Pokemon", menuName = "Pokemon/Create new pokemon")]
+    public class PokemonBase : ScriptableObject
     {
-        return ExpTable.GetXPFromLevel(level, growth);
-    }
-}
 
-[System.Serializable]
-public class ByLevelMoves : ISerializationCallbackReceiver
-{
-    [SerializeField] MovesBase baseMove;
-    [SerializeField] int level;
+        [TextArea]
+        [SerializeField] string description;
+        [SerializeField] byte catchRate = 255;
+        [SerializeField] int xpYield;
+        [SerializeField] Species_Gender_Threshold genderDistribution;
+        [SerializeField] LevelingRate growth;
+        [Header("Sprites")]
+        [SerializeField] Sprite front;
+        [SerializeField] Sprite back;
+        [SerializeField] Sprite chibi;
+        [Header("Types")]
+        [SerializeField] PokemonType type1;
+        [SerializeField] PokemonType type2;
+        [Header("Base Stats")]
+        [SerializeField] int maxHP;
+        [SerializeField] int attack;
+        [SerializeField] int defense;
+        [SerializeField] int spAttack;
+        [SerializeField] int spDefense;
+        [SerializeField] int speed;
+        [Space]
+        [SerializeField] List<ByLevelMoves> leanrnables;
+        [SerializeField] List<MovesBase> TM_n_HM;
+        [SerializeField] List<EvolutionCriteria> evolutions;
 
-    public MovesBase BaseMove { get => baseMove; }
-    public int Level { get => level; private set => level = Mathf.Clamp(value, 1, 100); }
 
-    public void OnAfterDeserialize() { }
 
-    public void OnBeforeSerialize() => OnValidate();
+        public string Description { get => description; }
 
-    public void OnValidate()
-    {
-        Level = level;
+        public Sprite Front { get => front; }
+        public Sprite Back { get => back; }
+        public Sprite Chibi => chibi;
+        public PokemonType Type1 { get => type1; }
+        public PokemonType Type2 { get => type2; }
+
+
+
+        public int MaxHP { get => maxHP; }
+        public int Attack { get { return attack; } }
+        public int Defense { get => defense; }
+        public int SpAttack { get => spAttack; }
+        public int SpDefense { get => spDefense; }
+        public int Speed { get => speed; }
+        public List<ByLevelMoves> Leanrnables { get => leanrnables; }
+
+        public static int MAX_MOVES_COUNT => 4;
+
+        public byte CatchRate => catchRate;
+
+        public int ExpYield => xpYield;
+
+        public LevelingRate Growth => growth;
+
+        public List<MovesBase> TM_n_HM_Leanrnables => TM_n_HM;
+
+        public Species_Gender_Threshold GenderThreshold => genderDistribution;
+
+        public List<EvolutionCriteria> Evolutions => evolutions;
+
+        public int GetExpForLevel(int level)
+        {
+            return ExpTable.GetXPFromLevel(level, growth);
+        }
     }
 
-
-}
-
-public enum PokemonType
-{
-    None,
-    Normal,
-    Fighting,
-    Flying,
-    Poison,
-    Ground,
-    Rock,
-    Bug,
-    Ghost,
-    Steel,
-    Fire,
-    Water,
-    Grass,
-    Electric,
-    Psychic,
-    Ice,
-    Dragon,
-    Dark,
-    Fairy,
-}
-
-
-public enum Stat
-{
-    Attack,
-    Defense,
-    SpecialAtk,
-    SpecialDef,
-    Speed,
-    Evasion,
-    Accuracy,
-    Critical,
-}
-
-
-
-public struct DamageDetails
-{
-    public bool Fainted { get; set; }
-    public float Critical { get; set; }
-    public float Effectiveness { get; set; }
-
-    public int Damage { get; set; }
-
-    public int OnUserSideEffect { get; set; }
-
-
-}
-
-
-public class Effectiveness
-{
-    static readonly float[][] chart =
+    [System.Serializable]
+    public class ByLevelMoves : ISerializationCallbackReceiver
     {
+        [SerializeField] MovesBase baseMove;
+        [SerializeField] int level;
+
+        public MovesBase BaseMove { get => baseMove; }
+        public int Level { get => level; private set => level = Mathf.Clamp(value, 1, 100); }
+
+        public void OnAfterDeserialize() { }
+
+        public void OnBeforeSerialize() => OnValidate();
+
+        public void OnValidate()
+        {
+            Level = level;
+        }
+
+
+    }
+
+    public enum PokemonType
+    {
+        None,
+        Normal,
+        Fighting,
+        Flying,
+        Poison,
+        Ground,
+        Rock,
+        Bug,
+        Ghost,
+        Steel,
+        Fire,
+        Water,
+        Grass,
+        Electric,
+        Psychic,
+        Ice,
+        Dragon,
+        Dark,
+        Fairy,
+    }
+
+
+    public enum Stat
+    {
+        Attack,
+        Defense,
+        SpecialAtk,
+        SpecialDef,
+        Speed,
+        Evasion,
+        Accuracy,
+        Critical,
+    }
+
+
+
+    public struct DamageDetails
+    {
+        public bool Fainted { get; set; }
+        public float Critical { get; set; }
+        public float Effectiveness { get; set; }
+
+        public int Damage { get; set; }
+
+        public int OnUserSideEffect { get; set; }
+
+
+    }
+
+
+    public class Effectiveness
+    {
+        static readonly float[][] chart =
+        {
         // row = atk, col =def     NOR  FGT  FLG  POS  GRD  RCK  BUG  GHT  STL  FIR  WTR  GRS  ELC  PSY  ICE  DRG  DRK  FAR
 		/* NOR */   new float[] {  1f,  1f,  1f,  1f,  1f, .5f,  1f,  0f, .5f,  1f,  1f,  1f,  1f,  1f,  1f,  1f,  1f,  1f }, 
 		/* FGT */   new float[] {  2f,  1f, .5f, .5f,  1f,  2f, .5f,  0f,  2f,  1f,  1f,  1f,  1f, .5f,  2f,  1f,  2f, .5f }, 
@@ -169,71 +175,71 @@ public class Effectiveness
 		/* FAR */   new float[] {  1f,  2f,  1f, .5f,  1f,  1f,  1f,  1f, .5f, .5f,  1f,  1f,  1f,  1f,  1f,  2f,  2f,  1f },
 
     };
-    public static float GetEffectivenes(PokemonType attackType, PokemonType defenseType)
-    {
-        if (attackType == PokemonType.None || defenseType == PokemonType.None)
-            return 1;
+        public static float GetEffectivenes(PokemonType attackType, PokemonType defenseType)
+        {
+            if (attackType == PokemonType.None || defenseType == PokemonType.None)
+                return 1;
 
-        //int row = (int)attackType - 1;
-        //int col = (int)defenseType - 1;
+            //int row = (int)attackType - 1;
+            //int col = (int)defenseType - 1;
 
-        return chart[((int)attackType) - 1][(int)defenseType - 1];
+            return chart[((int)attackType) - 1][(int)defenseType - 1];
+        }
+
+        public static float GetAllEffectivenesses(PokemonType attackType, PokemonType defense1, PokemonType defense2)
+        {
+            float t1 = GetEffectivenes(attackType, defense1);
+            float t2 = GetEffectivenes(attackType, defense2);
+
+            return (defense1 != defense2) ? t1 * t2 : t1;
+        }
+
+        public static float GetAffinityMod(PokemonType move, PokemonType pokemonType)
+        {
+            return (move == pokemonType) ? 1.5f : 1f;
+        }
+
+        public static float GetAllAffinities(PokemonType move, PokemonType type1, PokemonType type2)
+        {
+            float t1 = GetAffinityMod(move, type1);
+            float t2 = GetAffinityMod(move, type2);
+
+            return Mathf.Max(t1, t2);
+        }
     }
 
-    public static float GetAllEffectivenesses(PokemonType attackType, PokemonType defense1, PokemonType defense2)
-    {
-        float t1 = GetEffectivenes(attackType, defense1);
-        float t2 = GetEffectivenes(attackType, defense2);
 
-        return (defense1 != defense2) ? t1 * t2 : t1;
+
+    public static class BoostTable
+    {
+        static readonly float[] values = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
+
+        static readonly float[] hitValues = new float[] { .33f, .36f, .43f, .5f, .6f, .75f, 1f, 1.33f, 1.66f, 2f, 2.5f, 2.66f, 3f };
+
+        static readonly float[] critBonus = new float[] { 0.0625f, 0.125f, 0.25f, 0.333f, 0.5f, 1f };
+
+        public static float GetBoostValue(int stage)
+        {
+            return values[stage];
+        }
+
+        public static float GetPrecision(int stage)
+        {
+            return hitValues[stage + 6];
+        }
+
+        public static float GetCritBoost(int stage)
+        {
+            return critBonus[Mathf.Clamp(stage, 0, 4)];
+        }
+
     }
 
-    public static float GetAffinityMod(PokemonType move, PokemonType pokemonType)
+    public static class ExpTable
     {
-        return (move == pokemonType) ? 1.5f : 1f;
-    }
 
-    public static float GetAllAffinities(PokemonType move, PokemonType type1, PokemonType type2)
-    {
-        float t1 = GetAffinityMod(move, type1);
-        float t2 = GetAffinityMod(move, type2);
-
-        return Mathf.Max(t1, t2);
-    }
-}
-
-
-
-public static class BoostTable
-{
-    static readonly float[] values = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
-
-    static readonly float[] hitValues = new float[] { .33f, .36f, .43f, .5f, .6f, .75f, 1f, 1.33f, 1.66f, 2f, 2.5f, 2.66f, 3f };
-
-    static readonly float[] critBonus = new float[] { 0.0625f, 0.125f, 0.25f, 0.333f, 0.5f, 1f };
-
-    public static float GetBoostValue(int stage)
-    {
-        return values[stage];
-    }
-
-    public static float GetPrecision(int stage)
-    {
-        return hitValues[stage + 6];
-    }
-
-    public static float GetCritBoost(int stage)
-    {
-        return critBonus[Mathf.Clamp(stage, 0, 4)];
-    }
-
-}
-
-public static class ExpTable
-{
-
-    static readonly int[][] expTable =
-    {
+        static readonly int[][] expTable =
+        {
         /* 1 */ new int[] { 0, 0, 0, 0, 0, 0 },
         /* 2 */ new int[] { 15, 6, 8, 9, 10, 4 },
         /* 3 */ new int[] { 52, 21, 27, 57, 33, 13 },
@@ -336,40 +342,40 @@ public static class ExpTable
         /* 100 */new int[] { 600000, 800000, 1000000, 1059860, 1250000, 1640000 },
     };
 
-    public static int GetSize()
-    {
-        return expTable.Length;
+        public static int GetSize()
+        {
+            return expTable.Length;
+        }
+        public static int GetNumGrowthTypes()
+        {
+            int i = Random.Range(0, 99);
+            Debug.Log(i);
+            return expTable[i].Length;
+        }
+
+        public static int GetXPFromLevel(int level, LevelingRate growth)
+        {
+            if (level > 100)
+                return -1;
+
+            return expTable[level - 1][(int)growth];
+        }
     }
-    public static int GetNumGrowthTypes()
+
+    [System.Serializable]
+    public class EvolutionCriteria
     {
-        int i = Random.Range(0, 99);
-        Debug.Log(i);
-        return expTable[i].Length;
+        [SerializeField] PokemonBase evolution;
+        [SerializeField] int requiredLevel;
+
+        public PokemonBase Evolution => evolution;
+        public int RequiredLevel => requiredLevel;
     }
 
-    public static int GetXPFromLevel(int level, LevelingRate growth)
+    public static class PokeNature
     {
-        if (level > 100)
-            return -1;
-
-        return expTable[level - 1][(int)growth];
-    }
-}
-
-[System.Serializable]
-public class EvolutionCriteria
-{
-    [SerializeField] PokemonBase evolution;
-    [SerializeField] int requiredLevel;
-
-    public PokemonBase Evolution => evolution;
-    public int RequiredLevel => requiredLevel;
-}
-
-public static class PokeNature
-{
-    static readonly float[][] natureMods =
-    {
+        static readonly float[][] natureMods =
+        {
         /* Hardy    */    new float[] {1f,  1f, 1f, 1f, 1f },
         /* Lonely   */    new float[] {1.1f, .9f, 1f, 1f, 1f },
         /* Adamant  */    new float[] {1.1f, 1f, .9f, 1f, 1f },
@@ -398,46 +404,48 @@ public static class PokeNature
 
     };
 
-    public static float[] GetNatureModfier(NatureID nature)
-    {
-        return natureMods[(int)nature];
+        public static float[] GetNatureModfier(NatureID nature)
+        {
+            return natureMods[(int)nature];
+        }
+
     }
 
-}
-
-public enum LevelingRate
-{
-    erratic, fast, mid_fast, mid_slow, slow, fluctuant,
-}
-
-
-public static class GenderGenerator
-{
-    public static Gender GetPokemondGender(PokemonBase species)
+    public enum LevelingRate
     {
-        if (species.GenderThreshold == Species_Gender_Threshold.NoGender)
-            return Gender.Genderless;
+        erratic, fast, mid_fast, mid_slow, slow, fluctuant,
+    }
 
-        if ((byte)Random.Range(1, 252) >= (byte)species.GenderThreshold)
-            return Gender.Male;
 
-        return Gender.Female;
+    public static class GenderGenerator
+    {
+        public static Gender GetPokemondGender(PokemonBase species)
+        {
+            if (species.GenderThreshold == Species_Gender_Threshold.NoGender)
+                return Gender.Genderless;
+
+            if ((byte)Random.Range(1, 252) >= (byte)species.GenderThreshold)
+                return Gender.Male;
+
+            return Gender.Female;
+        }
+    }
+
+    public enum Species_Gender_Threshold : byte
+    {
+        F1_M1 = 127,
+        M = 0,
+        M7_F1 = 31,
+        M3_F1 = 63,
+        F3_M1 = 191,
+        F7_M1 = 225,
+        F = 254,
+        NoGender
+    }
+
+    public enum Gender
+    {
+        Male, Female, Genderless
     }
 }
 
-public enum Species_Gender_Threshold : byte
-{
-    F1_M1 = 127,
-    M = 0,
-    M7_F1 = 31,
-    M3_F1 = 63,
-    F3_M1 = 191,
-    F7_M1 = 225,
-    F = 254,
-    NoGender
-}
-
-public enum Gender
-{
-    Male, Female, Genderless
-}

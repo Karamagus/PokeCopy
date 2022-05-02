@@ -15,14 +15,19 @@ namespace pokeCopy
         [SerializeField] GameObject TextBox;
         [SerializeField] Text dialogueText;
 
+        [SerializeField] ChoiceBox choiceBox;
+
+
         public System.Action OnShowDialogue;
         public System.Action OnCloseDialogue;
 
+        int selection = -1;
 
         bool isShowing;
         public static DialogueCacheManager I { get { return i; } }
 
         public bool IsShowing { get => isShowing; }
+        public int Selection => selection; 
 
         //singleton pattern
         public void Awake()
@@ -59,6 +64,7 @@ namespace pokeCopy
                 yield break;
 
 
+
             dialogueText.text = "";
             isShowing = false;
             TextBox.SetActive(false);
@@ -71,7 +77,7 @@ namespace pokeCopy
 
         //Starts dialogue. It also continues dialogue when interacting. 
 
-        public IEnumerator ShowDialogue_CR(Dialogue dialogue)
+        public IEnumerator ShowDialogue_CR(Dialogue dialogue, List<string> choices = null)
         {
             if (dialogue == null || !(dialogue.senteces.Count() > 0))
                 yield break;
@@ -87,10 +93,16 @@ namespace pokeCopy
                 yield return new WaitUntil(() => GameManager.Instance.Inputs.UI.Submit.triggered || GameManager.Instance.Inputs.PlayerDigital.Interact.triggered);
 
             }
+
+
+            if (choices != null && choices.Count() > 0)
+            {
+                yield return choiceBox.SetChoices(choices);
+                selection = choiceBox.SelectedIndex;
+            }
+
             TextBox.SetActive(false);
             isShowing = false;
-
-
             OnCloseDialogue?.Invoke();
         }
 

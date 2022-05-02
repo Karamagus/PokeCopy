@@ -3,40 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConditionsDB
+
+namespace pokeCopy
 {
-
-    public static void Init()
+    public class ConditionsDB
     {
-        foreach (var kvp in Conditions)
-        {
-            var conditionId = kvp.Key;
-            var condition = kvp.Value;
 
-            condition.Id = conditionId;
+        public static void Init()
+        {
+            foreach (var kvp in Conditions)
+            {
+                var conditionId = kvp.Key;
+                var condition = kvp.Value;
+
+                condition.Id = conditionId;
+            }
+
+            foreach (var kvp in VolatConditions)
+            {
+                var condId = kvp.Key;
+                var condition = kvp.Value;
+
+                condition.Id = condId;
+            }
+            foreach (var kvp in HitEffects)
+            {
+                var condId = kvp.Key;
+                var hitEffect = kvp.Value;
+
+                hitEffect.Id = condId;
+            }
+
         }
 
-        foreach (var kvp in VolatConditions)
-        {
-            var condId = kvp.Key;
-            var condition = kvp.Value;
-
-            condition.Id = condId;
-        }
-        foreach (var kvp in HitEffects)
-        {
-            var condId = kvp.Key;
-            var hitEffect = kvp.Value;
-
-            hitEffect.Id = condId;
-        }
-
-    }
-
-    //refactor
-    public static Dictionary<ConditionID, Condition> Conditions { get; set; } =
-        new Dictionary<ConditionID, Condition>()
-        {
+        //refactor
+        public static Dictionary<ConditionID, Condition> Conditions { get; set; } =
+            new Dictionary<ConditionID, Condition>()
+            {
             {
                 ConditionID.psn,
                 new Condition()
@@ -168,11 +171,11 @@ public class ConditionsDB
 
 
 
-        };
+            };
 
-    public static Dictionary<ConditionID, VolCondition> VolatConditions { get; set; } =
-    new Dictionary<ConditionID, VolCondition>()
-    {
+        public static Dictionary<ConditionID, VolCondition> VolatConditions { get; set; } =
+        new Dictionary<ConditionID, VolCondition>()
+        {
             {
                 ConditionID.confusion,
                 new VolCondition()
@@ -326,11 +329,11 @@ public class ConditionsDB
 
 
 
-    };
+        };
 
-    public static Dictionary<HitEffectsID, HitEffects> HitEffects { get; set; } =
-        new Dictionary<HitEffectsID, HitEffects>()
-        {
+        public static Dictionary<HitEffectsID, HitEffects> HitEffects { get; set; } =
+            new Dictionary<HitEffectsID, HitEffects>()
+            {
             {
                   HitEffectsID.leech_life,
                   new HitEffects()
@@ -362,34 +365,36 @@ public class ConditionsDB
 
 
 
-        };
+            };
 
 
 
-    public static float GetCatchRateMod(Condition condition)
-    {
-        if (condition == null)
+        public static float GetCatchRateMod(Condition condition)
+        {
+            if (condition == null)
+                return 1f;
+
+            if (condition.Id == ConditionID.frz || condition.Id == ConditionID.slp)
+                return 2f;
+            else if (condition.Id == ConditionID.brn || condition.Id == ConditionID.psn || condition.Id == ConditionID.par)
+                return 1.5f;
+
             return 1f;
+        }
 
-        if (condition.Id == ConditionID.frz || condition.Id == ConditionID.slp)
-            return 2f;
-        else if (condition.Id == ConditionID.brn || condition.Id == ConditionID.psn || condition.Id == ConditionID.par)
-            return 1.5f;
 
-        return 1f;
+    }
+
+    [Serializable]
+    public enum ConditionID
+    {
+        none, psn, brn, par, frz, slp, fnt, confusion, flinch, leech_seed, speedX2, foresight, leechLife,
     }
 
 
-}
+    public enum HitEffectsID
+    {
+        none, leech_life, recoilQuarter, recoilThird, recoilHalf, recoilSelf, drainHalfDmg,
+    }
 
-[Serializable]
-public enum ConditionID
-{
-    none, psn, brn, par, frz, slp, fnt, confusion, flinch, leech_seed, speedX2, foresight, leechLife,
-}
-
-
-public enum HitEffectsID
-{
-    none, leech_life, recoilQuarter, recoilThird, recoilHalf, recoilSelf, drainHalfDmg,
 }
