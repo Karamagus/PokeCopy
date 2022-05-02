@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Dialogue 
+namespace pokeCopy
 {
-    [TextArea (3,15)]
-    public string[] senteces;
 
+    [System.Serializable]
+    public class Dialogue
+    {
+        [TextArea(3, 15)]
+        public string[] senteces;
+
+    }
 }
+

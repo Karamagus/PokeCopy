@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IInteractable 
+namespace pokeCopy
 {
-    public IEnumerator Interact_CR(Transform initiator = null);
+    public interface IInteractable
+    {
+        public IEnumerator Interact_CR(Transform initiator = null);
+    }
+
 }
