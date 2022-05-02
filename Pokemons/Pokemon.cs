@@ -33,7 +33,7 @@ namespace pokeCopy
         public int Exp { get; set; }
 
 
-        bool hasLeveledUp;
+        bool didLeveledUp;
 
         [SerializeField][ReadOnly] int hp;
         public int HP { get { return hp; } private set { hp = Mathf.Max(value, 0); } }
@@ -171,14 +171,13 @@ namespace pokeCopy
 
         public bool HasLeveledUp()
         {
-            hasLeveledUp = false;
             if (Exp < Base.GetExpForLevel(level + 1) || level >= 100)
-                return hasLeveledUp;
+                return false;
 
             ++level;
-            hasLeveledUp = true;
+            didLeveledUp = true;
             RecaulculateStatsAndHP();
-            return hasLeveledUp;
+            return true;
 
         }
 
@@ -246,7 +245,7 @@ namespace pokeCopy
         public EvolutionCriteria CanEvolveInto()
         {
 
-            return (hasLeveledUp) ? Base.Evolutions.FirstOrDefault(e => e.RequiredLevel <= Level) : null;
+            return (didLeveledUp)? Base.Evolutions.FirstOrDefault(e => e.RequiredLevel <= Level): null ;
         }
 
         public void Evolve(EvolutionCriteria evolution)
@@ -258,7 +257,7 @@ namespace pokeCopy
 
             RecaulculateStatsAndHP();
             Species = Base.name.Substring(Base.name.IndexOfAny(new char[] { '_', ' ' }) + 1);
-            hasLeveledUp = false;
+            didLeveledUp = false;
             /*
             var oldHp = MaxHP;
             CalculateStats();
@@ -306,6 +305,8 @@ namespace pokeCopy
         }
         public int MaxHP { get; private set; }
         public Gender Gender => gender;
+
+        public bool DoesLevelUp { get => didLeveledUp; set => didLeveledUp = value; }
 
         //public Nature Nature { get => nature; set => nature = value; }
 
@@ -367,6 +368,14 @@ namespace pokeCopy
             HP = Mathf.Min((HP + healAmount), MaxHP);
 
             OnHPChange?.Invoke();
+        }
+
+        public void FullRecovery()
+        {
+            TakeHeal(MaxHP);
+            Status = null;
+            OnStatusChanged?.Invoke();
+            RemoveAllVolat();
         }
 
         public void RestorePPByMove(int ppAmount, Move move)

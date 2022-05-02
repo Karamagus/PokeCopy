@@ -25,12 +25,14 @@ namespace pokeCopy
         CharMovement movement;
         ItemGiver giver;
         PokemonGiver pokemonGiver;
+        Healer healer;
 
         private void Awake()
         {
             movement = GetComponentInChildren<CharMovement>();
             giver = GetComponentInChildren<ItemGiver>();
             pokemonGiver = GetComponentInChildren<PokemonGiver>();
+            healer = GetComponentInChildren<Healer>();
             AdjustRoute();
 
         }
@@ -70,7 +72,6 @@ namespace pokeCopy
                 //isInteracting = true;
                 state = NPCState.dialogue;
                 movement.LookTowrds(initiator.position);
-
                 if (giver != null && giver.CanGive())
                 {
                     yield return giver.GiveItem_CR(initiator.GetComponent<PlayerMovement>());
@@ -104,6 +105,10 @@ namespace pokeCopy
                         yield return DialogueCacheManager.I.ShowDialogue_CR(activeQuest.Base.InProgressDialogue);
                     }
 
+                }
+                else if (healer)
+                {
+                    yield return healer.Heal(initiator, dialogue);
                 }
                 else
                 {
@@ -185,15 +190,15 @@ namespace pokeCopy
             {
                 activeQuest = (saveData.activeQuest != null) ? new Quest(saveData.activeQuest) : null;
 
-                questToStart = (saveData.toStartQuest != null || saveData.toStartQuest.Length > 0) ? QuestDB.GetDataByName(saveData.toStartQuest) : null;
-                questToComplete = (saveData.toFinishQuest != null || saveData.toFinishQuest.Length > 0) ? QuestDB.GetDataByName(saveData.toFinishQuest) : null;
+                questToStart = (saveData.toStartQuest != null && saveData.toStartQuest.Length > 0) ?  new Quest (QuestDB.GetDataByName(saveData.toStartQuest)).Base : null;
+                questToComplete = (saveData.toFinishQuest != null && saveData.toFinishQuest.Length > 0) ? new Quest (QuestDB.GetDataByName(saveData.toFinishQuest)).Base : null;
 
             }
 
         }
     }
 
-
+    [System.Serializable]
     public class NPCQuestSavaData
     {
         public QuestSaveData activeQuest;

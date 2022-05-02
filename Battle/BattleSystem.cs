@@ -206,6 +206,7 @@ namespace pokeCopy
             playerObject.SetActive(true);
             playerUnit = playerObject.GetComponent<Unit>();
             playerUnit.SetUpUnit(playerParty.GetHealthy(), playerHUD);
+            playerUnit.CrrPokemon.DoesLevelUp = false;
 
             yield return new WaitForSeconds(1.5f);
 
@@ -372,6 +373,8 @@ namespace pokeCopy
 
         IEnumerator UseMove_CR(Unit user, Unit target, Move move)
         {
+            dialogueBox.SetText("");
+
             bool canMove = user.CrrPokemon.BeforeTurnEffects();
             //play before effect animation
             if (!canMove)
@@ -577,7 +580,6 @@ namespace pokeCopy
 
                 yield return new WaitForSeconds(1f);
                 yield return GameManager.Instance.FadeInToFreeRoam_CR();
-                escapee.CrrPokemon.HasLeveledUp();
 
                 OnEndBattle(false);
                 yield break;
@@ -698,7 +700,7 @@ namespace pokeCopy
                     yield return dialogueBox.TypeDialougueText_CR($"{playerUnit.CrrPokemon.NickName} gained {expGain} Exp. Points!");
                     yield return playerUnit.BHud.UpdateXp_CR();//redundent?
                 }
-
+                //playerUnit.CrrPokemon.HasLeveledUp1 = false;
                 while (playerUnit.CrrPokemon.HasLeveledUp())
                 {
                     playerUnit.BHud.UpdateLevel();
